@@ -64,5 +64,7 @@ namespace osu.Game.Rulesets.Mods
         {
             health = healthProcessor.Health.GetBoundCopy();
         }
+
+        public double AdjustHealthIncrease(double healthIncrease) => healthIncrease;
     }
 }

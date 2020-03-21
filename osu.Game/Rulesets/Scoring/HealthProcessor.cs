@@ -2,9 +2,12 @@
 // See the LICENCE file in the repository root for full licence text.
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using osu.Framework.Bindables;
 using osu.Framework.Utils;
 using osu.Game.Rulesets.Judgements;
+using osu.Game.Rulesets.Mods;
 
 namespace osu.Game.Rulesets.Scoring
 {
@@ -32,6 +35,11 @@ namespace osu.Game.Rulesets.Scoring
         public readonly IBindable<bool> IsBreakTime = new Bindable<bool>();
 
         /// <summary>
+        /// The current selected mods
+        /// </summary>
+        public readonly Bindable<IReadOnlyList<Mod>> Mods = new Bindable<IReadOnlyList<Mod>>(Array.Empty<Mod>());
+
+        /// <summary>
         /// Whether this ScoreProcessor has already triggered the failed state.
         /// </summary>
         public bool HasFailed { get; private set; }
@@ -44,7 +52,11 @@ namespace osu.Game.Rulesets.Scoring
             if (HasFailed)
                 return;
 
-            Health.Value += GetHealthIncreaseFor(result);
+            double HealthIncrease = GetHealthIncreaseFor(result);
+            Health.Value += HealthIncrease;
+
+            foreach (var mod in Mods.Value.OfType<IApplicableToHealthProcessor>())
+                Health.Value += mod.AdjustHealthIncrease(HealthIncrease);
 
             if (!DefaultFailCondition && FailConditions?.Invoke(this, result) != true)
                 return;

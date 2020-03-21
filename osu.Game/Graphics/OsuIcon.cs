@@ -89,6 +89,7 @@ namespace osu.Game.Graphics
         public static IconUsage ModSpunout => Get(0xe046);
         public static IconUsage ModSuddendeath => Get(0xe047);
         public static IconUsage ModTarget => Get(0xe048);
-        public static IconUsage ModBg => Get(0xe04a);
+        public static IconUsage ModBg => Get(0xe049);
+        public static IconUsage ModNoRecovery => Get(0xe03e);
     }
 }

@@ -28,6 +28,8 @@ namespace osu.Game.Rulesets.Mods
             healthProcessor.FailConditions += FailCondition;
         }
 
+        public double AdjustHealthIncrease(double healthIncrease) => healthIncrease;
+
         protected virtual bool FailCondition(HealthProcessor healthProcessor, JudgementResult result) => !result.IsHit && result.Judgement.AffectsCombo;
     }
 }
