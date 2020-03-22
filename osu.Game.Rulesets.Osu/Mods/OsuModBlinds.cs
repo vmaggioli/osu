@@ -42,6 +42,8 @@ namespace osu.Game.Rulesets.Osu.Mods
             healthProcessor.Health.ValueChanged += health => { blinds.AnimateClosedness((float)health.NewValue); };
         }
 
+        public double AdjustHealthIncrease(double healthIncrease) => 0;
+
         public ScoreRank AdjustRank(ScoreRank rank, double accuracy) => rank;
 
         /// <summary>

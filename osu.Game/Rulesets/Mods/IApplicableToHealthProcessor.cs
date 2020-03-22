@@ -14,6 +14,7 @@ namespace osu.Game.Rulesets.Mods
 
         /// <summary>
         /// Called every time health is requested to change. Allows mods to adjust health regeneration rate.
+        /// <param name="healthIncrease">Amount of health increase prior to current mod adjustment (can be negative)</param>
         /// </summary>
         double AdjustHealthIncrease(double healthIncrease);
     }

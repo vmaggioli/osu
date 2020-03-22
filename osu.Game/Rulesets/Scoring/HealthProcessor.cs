@@ -52,11 +52,7 @@ namespace osu.Game.Rulesets.Scoring
             if (HasFailed)
                 return;
 
-            double HealthIncrease = GetHealthIncreaseFor(result);
-            Health.Value += HealthIncrease;
-
-            foreach (var mod in Mods.Value.OfType<IApplicableToHealthProcessor>())
-                Health.Value += mod.AdjustHealthIncrease(HealthIncrease);
+            Health.Value += GetHealthIncreaseFor(result);
 
             if (!DefaultFailCondition && FailConditions?.Invoke(this, result) != true)
                 return;
@@ -77,7 +73,15 @@ namespace osu.Game.Rulesets.Scoring
         /// </summary>
         /// <param name="result">The <see cref="JudgementResult"/>.</param>
         /// <returns>The health increase.</returns>
-        protected virtual double GetHealthIncreaseFor(JudgementResult result) => result.Judgement.HealthIncreaseFor(result);
+        protected virtual double GetHealthIncreaseFor(JudgementResult result)
+        {
+            double HealthIncrease = result.Judgement.HealthIncreaseFor(result);
+
+            foreach (var mod in Mods.Value.OfType<IApplicableToHealthProcessor>())
+                HealthIncrease += mod.AdjustHealthIncrease(HealthIncrease);
+
+            return HealthIncrease;
+        }
 
         /// <summary>
         /// The default conditions for failing.
